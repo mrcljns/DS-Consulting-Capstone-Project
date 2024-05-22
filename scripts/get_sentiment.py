@@ -27,5 +27,7 @@ if __name__ == '__main__':
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL)
     remarks_df['sentiment'] = remarks_df['Customer Remarks'].progress_map(lambda x: get_roberta_sentiment(str(x)))
+    full_df = pd.merge(full_df, remarks_df[['Unique id', 'sentiment']], on='Unique id', how='left')
+    full_df['sentiment'] = full_df['sentiment'].fillna('neutral')
 
-    remarks_df.to_csv('../data/Customer_support_data_sentiment.csv', index=False)
+    full_df.to_csv('../data/Customer_support_data_sentiment.csv', index=False)
