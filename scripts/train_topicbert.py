@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 def keyword_search(text):
-    keyword_set = ('executive', 'staff', 'customer service', 'customer care', 'customer_service', 'agent', 'person', 'talk')
+    keyword_set = ('executive', 'staff', 'customer service', 'customer care', 'customer_service', 'agent', 'person', 'talk', 'seller')
     
     return any(x in text.lower() for x in keyword_set)
 
@@ -32,17 +32,17 @@ def train_bert(docs, llm_path, prompt, save_path):
 
 
 if __name__ == '__main__':
-    full_df = pd.read_csv('../data/Customer_support_data.csv')
-    remarks_df = full_df[full_df['Customer Remarks'].isna() == False]
+    full_df = pd.read_csv('../data/Customer_support_data_sentiment.csv')
+    remarks_df = full_df[full_df['sentiment'] != 'neutral']
     remarks_df['keyword_in'] = remarks_df['Customer Remarks'].map(lambda x: keyword_search(str(x)))
     remarks_df = remarks_df[remarks_df.keyword_in == True].reset_index(drop=True)
     prompt = """
-    Q: You are an expert analyst of customer satisfation at an e-commerce platform called Shopzilla. I have a topic that contains the following customer remarks about the service: 
+    Q: I have a topic that contains the following customer remarks about the service: 
     [DOCUMENTS]
 
     The topic is described by the following keywords: '[KEYWORDS]'.
 
-    Based on the above information, can you give a short description of what the topic is about?.
+    Based on the above information, can you give a short label of the topic?
     A: 
     """
     topic_model = train_bert(docs=list(remarks_df['Customer Remarks']), 

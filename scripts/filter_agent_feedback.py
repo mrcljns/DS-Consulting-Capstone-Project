@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def keyword_search(text):
-    keyword_set = ('executive', 'staff', 'customer service', 'customer care', 'customer_service', 'agent', 'person', 'talk')
+    keyword_set = ('executive', 'staff', 'customer service', 'customer care', 'customer_service', 'agent', 'person', 'talk', 'seller')
     
     return any(x in text.lower() for x in keyword_set)
 
