@@ -1,23 +1,22 @@
 import pandas as pd
 
 
-import pandas as pd
-
 # Define a function to search for keywords in a given text
 def keyword_search(text, keyword_set):
     # Check if any keyword in the keyword_set is present in the text (case insensitive)
     return any(x in text.lower() for x in keyword_set)
 
+
 if __name__ == '__main__':
     # Define a set of keywords to search for in the customer remarks
     keyword_set = ('executive', 'staff', 'customer service', 'customer care', 
-                   'customer_service', 'agent', 'person', 'talk', 'seller')
+                   'agent', 'person', 'talk', 'seller')
     
     # Load the customer support data from a CSV file into a DataFrame
-    full_df = pd.read_csv('../data/Customer_support_data.csv')
+    full_df = pd.read_csv('../data/Customer_support_data_sentiment.csv')
     
     # Filter out rows where 'Customer Remarks' column is not empty
-    remarks_df = full_df[full_df['Customer Remarks'].isna() == False]
+    remarks_df = full_df[(full_df['Customer Remarks'].isna() == False) & (full_df['sentiment'] != "neutral")]
     
     # Apply keyword_search function to each customer remark and store the result in a new column 'keyword_in'
     remarks_df['keyword_in'] = remarks_df['Customer Remarks'].map(lambda x: keyword_search(str(x), keyword_set))
