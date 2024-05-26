@@ -24,8 +24,8 @@ if __name__ == '__main__':
     # Filter the DataFrame to include only rows where the 'keyword_in' column is True
     remarks_df = remarks_df[remarks_df.keyword_in == True]
     
-    # Group the DataFrame by 'Agent_name' and aggregate customer remarks by joining them with '; '
-    remarks_df = remarks_df.groupby('Agent_name').agg({'Customer Remarks': '; '.join}).reset_index()
+    # Group the DataFrame by 'Unique id' and aggregate customer remarks by joining them with '; '
+    remarks_df = remarks_df[['Unique id', 'Customer Remarks']]
     
     # Save the resulting DataFrame to a new CSV file
     remarks_df.to_csv('../data/agent_feedback.csv', index=False)
